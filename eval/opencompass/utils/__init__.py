@@ -14,3 +14,5 @@ from .network import *  # noqa
 from .prompt import *  # noqa
 from .result_station import *  # noqa
 from .text_postprocessors import *  # noqa
+
+from .summarizer import *  # noqa
