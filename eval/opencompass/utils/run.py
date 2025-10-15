@@ -518,3 +518,24 @@ def consturct_chatml_datasets(custom_cfg: List[Dict[str, Any]]):
         chatobj_custom_dataset_list.append(chatobj_custom_dataset)
 
     return chatobj_custom_dataset_list
+
+
+def exec_mm_infer_runner(tasks, args, cfg):
+    """execute multimodal infer runner according to args."""
+    if args.slurm:
+        runner = SlurmRunner(dict(type='MultimodalInferTask'),
+                             max_num_workers=args.max_num_workers,
+                             partition=args.partition,
+                             quotatype=args.quotatype,
+                             retry=args.retry,
+                             debug=args.debug,
+                             lark_bot_url=cfg['lark_bot_url'])
+    elif args.dlc:
+        raise NotImplementedError('Currently, we do not support evaluating \
+                             multimodal models on dlc.')
+    else:
+        runner = LocalRunner(task=dict(type='MultimodalInferTask'),
+                             max_num_workers=args.max_num_workers,
+                             debug=args.debug,
+                             lark_bot_url=cfg['lark_bot_url'])
+    runner(tasks)
