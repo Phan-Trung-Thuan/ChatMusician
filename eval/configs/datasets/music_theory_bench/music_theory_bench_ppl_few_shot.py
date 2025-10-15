@@ -34,8 +34,8 @@ for _name in music_theory_bench_all_sets:
             },
             ice_token="</E>",
         ),
-        retriever=dict(type=FixKRetriever),
-        inferencer=dict(type=PPLInferencer, fix_id_list=[0, 1, 2, 3, 4]),
+        retriever=dict(type=FixKRetriever, fix_id_list=[0, 1, 2, 3, 4]),
+        inferencer=dict(type=PPLInferencer),
     )
 
     music_theory_bench_eval_cfg = dict(evaluator=dict(type=AccEvaluator), )
