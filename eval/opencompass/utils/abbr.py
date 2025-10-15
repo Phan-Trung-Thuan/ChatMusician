@@ -1,11 +1,13 @@
 import os.path as osp
-from typing import Dict
+from typing import Dict, List, Union
 
 from mmengine.config import ConfigDict
 
 
-def model_abbr_from_cfg(cfg: ConfigDict) -> str:
+def model_abbr_from_cfg(cfg: Union[ConfigDict, List[ConfigDict]]) -> str:
     """Generate model abbreviation from the model's confg."""
+    if isinstance(cfg, (list, tuple)):
+        return '_'.join(model_abbr_from_cfg(c) for c in cfg)
     if 'abbr' in cfg:
         return cfg['abbr']
     model_abbr = cfg['type'] + '_' + '_'.join(
@@ -44,3 +46,25 @@ def get_infer_output_path(model_cfg: ConfigDict,
     model_abbr = model_abbr_from_cfg(model_cfg)
     dataset_abbr = dataset_abbr_from_cfg(dataset_cfg)
     return osp.join(root_path, model_abbr, f'{dataset_abbr}.{file_extension}')
+
+
+def deal_with_judge_model_abbr(model_cfg, judge_model_cfg, meta=False):
+    if isinstance(model_cfg, ConfigDict):
+        model_cfg = (model_cfg, )
+    if meta:
+        for m_cfg in model_cfg:
+            if 'summarized-by--' in m_cfg['abbr']:
+                return model_cfg
+        model_cfg += ({
+            'abbr':
+            'summarized-by--' + model_abbr_from_cfg(judge_model_cfg)
+        }, )
+    else:
+        for m_cfg in model_cfg:
+            if 'judged-by--' in m_cfg['abbr']:
+                return model_cfg
+        model_cfg += ({
+            'abbr':
+            'judged-by--' + model_abbr_from_cfg(judge_model_cfg)
+        }, )
+    return model_cfg

@@ -4,11 +4,9 @@ import copy
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Union
 
-import faiss
 import numpy as np
 import torch
 import tqdm
-from sentence_transformers import SentenceTransformer
 from torch.utils.data import DataLoader
 from transformers import AutoTokenizer, BatchEncoding, PreTrainedTokenizerBase
 from transformers.file_utils import PaddingStrategy
@@ -57,6 +55,8 @@ class TopkRetriever(BaseRetriever):
                  tokenizer_name: Optional[str] = 'gpt2-xl',
                  batch_size: Optional[int] = 1) -> None:
         super().__init__(dataset, ice_separator, ice_eos_token, ice_num)
+        from sentence_transformers import SentenceTransformer
+
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         self.batch_size = batch_size
         self.tokenizer_name = tokenizer_name
@@ -84,6 +84,8 @@ class TopkRetriever(BaseRetriever):
         self.index = self.create_index()
 
     def create_index(self):
+        import faiss
+
         self.select_datalist = self.dataset_reader.generate_input_field_corpus(
             self.index_ds)
         encode_datalist = DatasetEncoder(self.select_datalist,

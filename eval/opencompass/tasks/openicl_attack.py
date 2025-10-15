@@ -1,6 +1,7 @@
 import argparse
 import os.path as osp
 import random
+import sys
 import time
 from typing import Any
 
@@ -15,7 +16,7 @@ from opencompass.utils import (build_dataset_from_cfg, build_model_from_cfg,
                                task_abbr_from_cfg)
 
 
-@TASKS.register_module(force=(__name__ == '__main__'))  # A hack for script run
+@TASKS.register_module()
 class OpenICLAttackTask(BaseTask):
     """OpenICL Inference Task.
 
@@ -42,13 +43,15 @@ class OpenICLAttackTask(BaseTask):
                 the command.
         """
         script_path = __file__
+        python = sys.executable
         if self.num_gpus > 0:
             port = random.randint(12000, 32000)
-            command = (f'torchrun --master_port={port} '
-                       f'--nproc_per_node {self.num_procs} '
-                       f'{script_path} {cfg_path}')
+            command = (
+                f'{python} -m torch.distributed.run --master_port={port} '
+                f'--nproc_per_node {self.num_procs} '
+                f'{script_path} {cfg_path}')
         else:
-            command = f'python {script_path} {cfg_path}'
+            command = f'{python} {script_path} {cfg_path}'
 
         return template.format(task_cmd=command)
 

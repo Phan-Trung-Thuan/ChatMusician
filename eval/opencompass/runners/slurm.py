@@ -4,7 +4,7 @@ import random
 import subprocess
 import time
 from functools import partial
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import mmengine
 from mmengine.config import ConfigDict
@@ -31,6 +31,8 @@ class SlurmRunner(BaseRunner):
         qos (str): Slurm quality of service. Defaults to None.
         debug (bool): Whether to run in debug mode. Defaults to False.
         lark_bot_url (str): Lark bot url. Defaults to None.
+        extra_command (List, optional): Extra slurm command.
+            For example ['-c 12', '-w node1']. Defaults to None.
     """
 
     def __init__(self,
@@ -41,13 +43,18 @@ class SlurmRunner(BaseRunner):
                  quotatype: str = None,
                  qos: str = None,
                  debug: bool = False,
-                 lark_bot_url: str = None):
+                 lark_bot_url: str = None,
+                 extra_command: Optional[List[str]] = None):
         super().__init__(task=task, debug=debug, lark_bot_url=lark_bot_url)
         self.max_num_workers = max_num_workers
         self.retry = retry
         self.partition = partition
         self.quotatype = quotatype
         self.qos = qos
+        if not extra_command:
+            extra_command = []
+        assert isinstance(extra_command, list)
+        self.extra_command = extra_command
 
     def launch(self, tasks: List[Dict[str, Any]]) -> List[Tuple[str, int]]:
         """Launch multiple tasks.
@@ -69,11 +76,11 @@ class SlurmRunner(BaseRunner):
             status = [self._launch(task, random_sleep=False) for task in tasks]
         return status
 
-    def _launch(self, task_cfg: ConfigDict, random_sleep: bool = True):
+    def _launch(self, cfg: ConfigDict, random_sleep: bool = True):
         """Launch a single task.
 
         Args:
-            task_cfg (ConfigDict): Task config.
+            cfg (ConfigDict): Task config.
             random_sleep (bool): Whether to sleep for a random time before
                 running the command. This avoids cluster error when launching
                 multiple tasks at the same time. Default: True.
@@ -81,10 +88,7 @@ class SlurmRunner(BaseRunner):
         Returns:
             tuple[str, int]: Task name and exit code.
         """
-        task_type = self.task_cfg.type
-        if isinstance(self.task_cfg.type, str):
-            task_type = TASKS.get(task_type)
-        task = task_type(task_cfg)
+        task = TASKS.build(dict(cfg=cfg, type=self.task_cfg['type']))
         num_gpus = task.num_gpus
         task_name = task.name
 
@@ -92,7 +96,7 @@ class SlurmRunner(BaseRunner):
         mmengine.mkdir_or_exist('tmp/')
         param_file = f'tmp/{os.getpid()}_params.py'
         try:
-            task_cfg.dump(param_file)
+            cfg.dump(param_file)
 
             # Build up slurm command
             tmpl = 'srun'
@@ -104,7 +108,9 @@ class SlurmRunner(BaseRunner):
                 tmpl += f' --qos={self.qos}'
             if num_gpus > 0:
                 tmpl += f' --gres=gpu:{num_gpus}'
-            tmpl += f" -N1 -J '{task_name[:512]}'" + ' {task_cmd}'
+            for extra_cmd in self.extra_command:
+                tmpl += f' {extra_cmd}'
+            tmpl += f" -N1 -u -J '{task_name[:512]}'" + ' {task_cmd}'
             get_cmd = partial(task.get_command,
                               cfg_path=param_file,
                               template=tmpl)
@@ -145,7 +151,7 @@ class SlurmRunner(BaseRunner):
                                         stderr=stdout)
 
             if result.returncode != 0 and not self.debug:
-                logger.warning(f'task {task_name} fail, see\n{out_path}')
+                logger.error(f'task {task_name} fail, see\n{out_path}')
         finally:
             # Clean up
             os.remove(param_file)
