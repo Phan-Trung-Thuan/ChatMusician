@@ -24,7 +24,7 @@ class MusicTheoryBenchDataset(BaseDataset):
     @staticmethod
     def load(path: str, name: str):
         dataset = DatasetDict()
-        music_theory_dataset = load_dataset(path)
+        music_theory_dataset = load_dataset(path, download_mode="force_redownload")
         dataset['dev'] = music_theory_dataset['dev'].map(convert_dataset)
         dataset['test'] = music_theory_dataset['test'].filter(lambda x: x['subject'] == name).map(convert_dataset)
         return dataset
