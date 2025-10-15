@@ -116,6 +116,9 @@ def parse_args():
         'Will be overrideen by the "retry" argument in the config.',
         type=int,
         default=2)
+    
+    parser.add_argument('--accelerator', default=None)
+    
     # set srun args
     slurm_parser = parser.add_argument_group('slurm_args')
     parse_slurm_args(slurm_parser)
