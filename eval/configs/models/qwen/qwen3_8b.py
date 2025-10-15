@@ -8,8 +8,8 @@ models = [
     dict(
         abbr="qwen3-8b",
         type=HuggingFaceCausalLM,
-        path="./models/qwen/Qwen3-8B/",        # local folder containing model weights
-        tokenizer_path="./models/qwen/Qwen3-8B/",  # same path for tokenizer
+        path="Qwen/Qwen3-8B/",        # local folder containing model weights
+        tokenizer_path="Qwen/Qwen3-8B/",  # same path for tokenizer
         tokenizer_kwargs=dict(padding_side='left', truncation_side='left'),
         model_kwargs=dict(
             device_map="auto",
