@@ -16,10 +16,10 @@ models = [
         ),
         max_out_len=100,
         max_seq_len=2048,
-        batch_size=8,
+        batch_size=64,
         model_kwargs=dict(device_map='auto'),
         batch_padding=False, # if false, inference with for-loop without batch padding
-        run_cfg=dict(num_gpus=1, num_procs=1),
+        run_cfg=dict(num_gpus=2, num_procs=2),
     )
     for model_abbr, model_path in model_path_mapping.items()
 ]
