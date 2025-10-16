@@ -10,14 +10,14 @@ models = [
         type=HuggingFaceCausalLM,
         path="Qwen/Qwen3-4B",        # local folder containing model weights
         tokenizer_path="Qwen/Qwen3-4B",  # same path for tokenizer
-        tokenizer_kwargs=dict(use_fast=True, padding_side='left', truncation_side='left'),
+        tokenizer_kwargs=dict(padding_side='left', truncation_side='left'),
         model_kwargs=dict(
             device_map="auto",
-            torch_dtype="torch.bfloat16",
+            torch_dtype="auto",
         ),
         max_out_len=100,
         max_seq_len=2048,
         batch_size=16,
-        run_cfg=dict(num_gpus=2, num_procs=2),
+        run_cfg=dict(num_gpus=1, num_procs=1),
     ),
 ]
