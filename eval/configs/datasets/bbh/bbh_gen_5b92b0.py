@@ -41,8 +41,7 @@ bbh_free_form_sets = [
 
 def get_prompt_hint(_name):
     # This logic only executes when the function is explicitly called at runtime.
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    prompt_file_path = os.path.join(current_dir, 'lib_prompt', f'{_name}.txt')
+    prompt_file_path = os.path.join('.', 'lib_prompt', f'{_name}.txt')
     with open(prompt_file_path, 'r') as f:
         return f.read()
 
