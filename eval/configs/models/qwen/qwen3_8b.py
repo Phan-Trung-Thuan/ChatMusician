@@ -17,7 +17,7 @@ models = [
         ),
         max_out_len=100,
         max_seq_len=2048,
-        batch_size=16,
+        batch_size=32,
         run_cfg=dict(num_gpus=2, num_procs=2),
     ),
 ]
