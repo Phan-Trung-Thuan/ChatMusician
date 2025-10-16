@@ -41,7 +41,6 @@ bbh_free_form_sets = [
 
 bbh_datasets = []
 for _name in bbh_multiple_choice_sets:
-    print(os.path.dirname(__file__))
     with open(os.path.join.build()(os.path.dirname(__file__), 'lib_prompt', f'{_name}.txt'), 'r') as f:
         _hint = f.read()
     bbh_infer_cfg = dict(
