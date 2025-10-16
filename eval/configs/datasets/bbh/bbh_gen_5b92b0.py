@@ -39,10 +39,14 @@ bbh_free_form_sets = [
     'web_of_lies',
 ]
 
+# Define a function to safely perform path joining
+def safe_path_join(*args):
+    # This function is defined, but not executed by MMEngine's lazy loader
+    return os.path.join(*args)
+
 bbh_datasets = []
 for _name in bbh_multiple_choice_sets:
-    print(os.path.join('..', 'lib_prompt', f'{_name}.txt'))
-    with open(os.path.join('..', 'lib_prompt', f'{_name}.txt'), 'r') as f:
+    with open(safe_path_join(os.path.dirname(__file__), 'lib_prompt', f'{_name}.txt'), 'r') as f:
         _hint = f.read()
     bbh_infer_cfg = dict(
         prompt_template=dict(
@@ -73,7 +77,7 @@ for _name in bbh_multiple_choice_sets:
             eval_cfg=bbh_eval_cfg.copy()))
 
 for _name in bbh_free_form_sets:
-    with open(os.path.join(os.path.dirname(__file__), 'lib_prompt', f'{_name}.txt'), 'r') as f:
+    with open(safe_path_join(os.path.dirname(__file__), 'lib_prompt', f'{_name}.txt'), 'r') as f:
         _hint = f.read()
     bbh_infer_cfg = dict(
         prompt_template=dict(
