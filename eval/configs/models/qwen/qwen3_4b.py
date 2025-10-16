@@ -23,7 +23,7 @@ models = [
         model_kwargs=dict(
             device_map="auto",              # auto-splits across 2 GPUs
             torch_dtype="torch.bfloat16",   # faster and memory-efficient on T4
-            attn_implementation="flash_attention_2",  # use FlashAttention if available
+            # attn_implementation="flash_attention_2",  # use FlashAttention if available
         ),
         max_out_len=128,                    # allow slightly longer generations
         max_seq_len=2048,                   # typical evaluation length
