@@ -41,7 +41,7 @@ bbh_free_form_sets = [
 
 def get_prompt_hint(_name):
     # This logic only executes when the function is explicitly called at runtime.
-    prompt_file_path = f'../lib_prompt/{_name}.txt'
+    prompt_file_path = f'configs/datasets/bbh/lib_prompt/{_name}.txt'
     with open(prompt_file_path, 'r') as f:
         return f.read()
 
