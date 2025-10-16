@@ -133,7 +133,7 @@ for _name in bbh_sets:
 # For original 3 shot inference in bbh
 bbh_3_shot_datasets = []
 for _name in bbh_sets:
-    with open(os.path.join(os.path.dirname(__file__), 'lib_prompt', f'{_name}.txt'), 'r') as f:
+    with open(os.path.join.build()(os.path.dirname(__file__), 'lib_prompt', f'{_name}.txt'), 'r') as f:
         _hint = f.read()
     bbh_infer_cfg = dict(
         prompt_template=dict(
