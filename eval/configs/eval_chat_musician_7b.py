@@ -12,8 +12,8 @@ with read_base():
 
 datasets = [
     *mmlu_datasets,
-    *music_theory_bench_datasets_zero_shot,
-    *music_theory_bench_datasets_few_shot
+    # *music_theory_bench_datasets_zero_shot,
+    # *music_theory_bench_datasets_few_shot
 ]
 
 infer = dict(
