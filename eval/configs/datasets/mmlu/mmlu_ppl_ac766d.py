@@ -41,7 +41,7 @@ mmlu_all_sets = [
     # "professional_law", # ???
     # "medical_genetics", # ???
     "professional_psychology", # ???
-    # "jurisprudence", # ???
+    "jurisprudence", # ???
 
     # "world_religions",
     # "philosophy",
