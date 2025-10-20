@@ -38,10 +38,10 @@ mmlu_all_sets = [
     # "computer_security",
 
     # "high_school_microeconomics", # ???
-    # "professional_law", # ???
+    "professional_law", # ???
     # "medical_genetics", # ???
-    "professional_psychology", # ???
-    "jurisprudence", # ???
+    # "professional_psychology", # ???
+    # "jurisprudence", # ???
 
     # "world_religions",
     # "philosophy",
