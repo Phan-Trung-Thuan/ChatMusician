@@ -37,8 +37,8 @@ mmlu_all_sets = [
     # "moral_scenarios",
     # "computer_security",
 
-    # "high_school_microeconomics", # ???
-    "professional_law", # ???
+    "high_school_microeconomics", # ???
+    # "professional_law", # ???
     # "medical_genetics", # ???
     # "professional_psychology", # ???
     # "jurisprudence", # ???
