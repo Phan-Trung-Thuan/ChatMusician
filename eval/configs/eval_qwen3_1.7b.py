@@ -10,7 +10,7 @@ with read_base():
     from .models.qwen.qwen3_1_7b import models
 
 datasets = [
-    *mmlu_datasets,
+    # *mmlu_datasets,
     *music_theory_bench_datasets_zero_shot,
     *music_theory_bench_datasets_few_shot
 ]
