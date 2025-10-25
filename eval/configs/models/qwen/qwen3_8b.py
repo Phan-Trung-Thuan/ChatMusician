@@ -1,4 +1,5 @@
 from opencompass.models import HuggingFaceCausalLM
+import unsloth
 from unsloth import FastLanguageModel
 
 # Qwen3 8B setup
