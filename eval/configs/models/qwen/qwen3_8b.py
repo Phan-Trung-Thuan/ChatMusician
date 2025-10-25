@@ -1,4 +1,5 @@
 from opencompass.models import HuggingFaceCausalLM
+from unsloth import FastLanguageModel
 
 # Qwen3 8B setup
 # You can download from https://huggingface.co/Qwen/Qwen3-8B
@@ -7,8 +8,8 @@ from opencompass.models import HuggingFaceCausalLM
 models = [
     dict(
         abbr="qwen3-8b",
-        type=HuggingFaceCausalLM,
-        path="Qwen/Qwen3-8B",        # local folder containing model weights
+        type=FastLanguageModel,
+        path="unsloth/Qwen3-8B",        # local folder containing model weights
         tokenizer_path="Qwen/Qwen3-8B",  # same path for tokenizer
         tokenizer_kwargs=dict(padding_side='left', truncation_side='left'),
         model_kwargs=dict(
