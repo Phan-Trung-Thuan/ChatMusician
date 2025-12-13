@@ -15,7 +15,7 @@ models = [
             truncation_side="left"
         ),
         model_kwargs=dict(
-            device_map=None,              # 🚨 QUAN TRỌNG
+            device_map='cuda:0',              # 🚨 QUAN TRỌNG
             torch_dtype="torch.bfloat16",
         ),
         max_out_len=100,
