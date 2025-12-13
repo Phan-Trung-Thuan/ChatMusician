@@ -8,16 +8,23 @@ models = [
     dict(
         abbr="qwen3-4b",
         type=HuggingFaceCausalLM,
-        path="Qwen/Qwen3-4B",        # local folder containing model weights
-        tokenizer_path="Qwen/Qwen3-4B",  # same path for tokenizer
-        tokenizer_kwargs=dict(padding_side='left', truncation_side='left'),
+        path="Qwen/Qwen3-4B",
+        tokenizer_path="Qwen/Qwen3-4B",
+        tokenizer_kwargs=dict(
+            padding_side="left",
+            truncation_side="left"
+        ),
         model_kwargs=dict(
-            device_map="auto",
+            device_map=None,              # 🚨 QUAN TRỌNG
             torch_dtype="torch.bfloat16",
         ),
         max_out_len=100,
         max_seq_len=2048,
-        batch_size=128,
-        run_cfg=dict(num_gpus=2, num_procs=2),
+        batch_size=64,                    # ↓ giảm cho GPU đơn
+        run_cfg=dict(
+            num_gpus=1,
+            num_procs=1,
+        ),
     ),
 ]
+
