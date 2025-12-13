@@ -8,8 +8,8 @@ models = [
     dict(
         abbr="qwen3-4b",
         type=HuggingFaceCausalLM,
-        path="Qwen/Qwen3-4B",
-        tokenizer_path="Qwen/Qwen3-4B",
+        path="Qwen/Qwen3-4B-Instruct-2507",
+        tokenizer_path="Qwen/Qwen3-4B-Instruct-2507",
         tokenizer_kwargs=dict(
             padding_side="left",
             truncation_side="left"
