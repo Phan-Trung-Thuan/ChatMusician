@@ -8,19 +8,21 @@ models = [
     dict(
         abbr="qwen3-4b",
         type=HuggingFaceCausalLM,
-        path="Qwen/Qwen3-4B-Instruct-2507",
-        tokenizer_path="Qwen/Qwen3-4B-Instruct-2507",
+        # path="Qwen/Qwen3-4B-Instruct-2507",
+        # tokenizer_path="Qwen/Qwen3-4B-Instruct-2507",
+        path="Qwen/Qwen3-4B-Thinking-2507",
+        tokenizer_path="Qwen/Qwen3-4B-Thinking-2507",
         tokenizer_kwargs=dict(
             padding_side="left",
             truncation_side="left"
         ),
         model_kwargs=dict(
-            device_map='cuda:0',              # 🚨 QUAN TRỌNG
+            device_map='cuda:0',    
             torch_dtype="torch.bfloat16",
         ),
         max_out_len=100,
         max_seq_len=2048,
-        batch_size=64,                    # ↓ giảm cho GPU đơn
+        batch_size=64,           
         run_cfg=dict(
             num_gpus=1,
             num_procs=1,
